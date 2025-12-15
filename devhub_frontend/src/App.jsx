@@ -1,27 +1,22 @@
-// devhub_frontend/src/App.jsx
+// devhub_frontend/src/App.jsx (UPDATED)
 
 import React from 'react';
-// VITAL FIX: Navigate must be imported from react-router-dom
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'; 
-
 import Header from './components/Header';
 import Footer from './components/Footer';
-import ProtectedRoute from './components/ProtectedRoute'; // Assumes you've created this
-import { AuthProvider } from './context/AuthContext';    // Assumes you've created this
+import ProtectedRoute from './components/ProtectedRoute'; 
+import { AuthProvider } from './context/AuthContext';    
 
 // Page Components
 import HomePage from './pages/HomePage';
 import ProjectsPage from './pages/ProjectsPage';
 import DevelopersPage from './pages/DevelopersPage';
 import ResourcesPage from './pages/ResourcesPage';
-
-// Admin Components 
-import AdminLoginPage from './pages/AdminLoginPage'; // Assumes you've created this
-import AdminDashboard from './pages/AdminDashboard'; // Assumes you've created this
+import AdminLoginPage from './pages/AdminLoginPage'; 
+import AdminDashboard from './pages/AdminDashboard'; 
 
 function App() {
   return (
-    // Wrap the entire application in the AuthProvider
     <AuthProvider>
       <Router>
         <Header />
@@ -36,21 +31,18 @@ function App() {
             {/* Admin Login Route */}
             <Route path="/admin-login" element={<AdminLoginPage />} />
 
-            {/* Protected Route */}
-            {/* Access is guarded by the ProtectedRoute component */}
+          
             <Route 
-                path="/admin-dashboard" 
+                path="/admin/*" 
                 element={
                     <ProtectedRoute>
-                        <AdminDashboard />
+                        <AdminDashboard /> 
                     </ProtectedRoute>
                 } 
             />
             
-            {/* Redirect /admin to the login page */}
-            {/* The Navigate component is now correctly imported and used */}
-            <Route path="/admin" element={<Navigate to="/admin-login" replace />} />
-
+            {/* Fallback/Redirect */}
+            <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
           </Routes>
         </main>
         <Footer />

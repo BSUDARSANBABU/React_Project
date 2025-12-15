@@ -1,8 +1,9 @@
-// devhub_frontend/src/pages/AdminLoginPage.js (or .jsx)
+// src/pages/AdminLoginPage.js
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext'; 
+import { useAuth } from '../context/AuthContext';
+
 
 const AdminLoginPage = () => {
   const [username, setUsername] = useState('');
@@ -15,19 +16,21 @@ const AdminLoginPage = () => {
     e.preventDefault();
     setError('');
 
-    // Conceptual login check
+    // **Actual Authentication Logic Placeholder:**
+    // In a production app, this would send credentials to Django's /api/token/ endpoint
+    // and store the returned JWT token. For this example, we use a simple check.
     const success = login(username, password);
 
     if (success) {
-      navigate('/admin-dashboard');
+      navigate('/admin/dashboard'); // Redirect to the new dashboard
     } else {
-      setError('Invalid credentials. (Hint: Use admin/password123)');
+      setError('Invalid credentials. Hint: Use admin/password123 (conceptual)');
     }
   };
 
   return (
     <div className="admin-login-container">
-      <h2>🔒 Admin Login</h2>
+      <h2>🔒 DevHub Admin Login</h2>
       <form onSubmit={handleSubmit} className="login-form">
         <div className="form-group">
           <label htmlFor="username">Username</label>
@@ -51,12 +54,11 @@ const AdminLoginPage = () => {
         </div>
         {error && <p className="error-message">{error}</p>}
         <button type="submit" className="primary-btn">
-          Login
+          Log In
         </button>
       </form>
     </div>
   );
 };
 
-// VITAL FIX: This line provides the required default export
 export default AdminLoginPage;
