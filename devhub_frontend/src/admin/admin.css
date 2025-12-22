@@ -1,0 +1,67 @@
+/* Admin Layout */
+.admin-layout {
+display: flex;
+min-height: 100vh;
+background: #f4f6f8;
+font-family: Arial, sans-serif;
+}
+
+
+/* Sidebar */
+.admin-sidebar {
+width: 220px;
+background: #111827;
+color: #fff;
+padding: 20px;
+}
+
+
+.admin-logo {
+text-align: center;
+margin-bottom: 30px;
+}
+
+
+.admin-sidebar nav a {
+display: block;
+padding: 10px;
+color: #d1d5db;
+text-decoration: none;
+border-radius: 6px;
+margin-bottom: 6px;
+}
+
+
+.admin-sidebar nav a.active,
+.admin-sidebar nav a:hover {
+background: #2563eb;
+color: #fff;
+}
+
+
+/* Header */
+.admin-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+background: #ffffff;
+padding: 15px 20px;
+border-bottom: 1px solid #e5e7eb;
+}
+
+
+.admin-header button {
+background: #ef4444;
+border: none;
+color: white;
+padding: 6px 12px;
+border-radius: 4px;
+cursor: pointer;
+}
+
+
+/* Content */
+.admin-content {
+flex: 1;
+padding: 20px;
+}

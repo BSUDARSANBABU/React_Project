@@ -1,117 +1,69 @@
-// src/pages/HomePage.js
+import { useEffect, useState } from "react";
 
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
+import Hero from "../components/Hero";
+import ServiceCard from "../components/ServiceCard";
+import ProjectCard from "../components/ProjectCard";
+import DeveloperCard from "../components/DeveloperCard";
+
+import { getServices } from "../services/serviceApi";
+import { getProjects } from "../services/projectApi";
+import { getDevelopers } from "../services/developerApi";
 
 
-// API endpoints for the latest content previews
-const PROJECTS_API = 'http://localhost:8000/api/projects/';
-const DEVELOPERS_API = 'http://localhost:8000/api/developers/';
-const RESOURCES_API = 'http://localhost:8000/api/resources/';
-
-const HomePage = () => {
-  const [latestProjects, setLatestProjects] = useState([]);
-  const [featuredDevelopers, setFeaturedDevelopers] = useState([]);
-  const [latestResources, setLatestResources] = useState([]);
-  const [loading, setLoading] = useState(true);
+export default function HomePage() {
+  const [services, setServices] = useState([]);
+  const [projects, setProjects] = useState([]);
+  const [developers, setDevelopers] = useState([]);
 
   useEffect(() => {
-    // Fetch limited data for previews
-    const fetchData = async () => {
-      try {
-        const [projectsRes, devsRes, resourcesRes] = await Promise.all([
-          axios.get(`${PROJECTS_API}?is_featured=True`), // Assume Django filters for featured
-          axios.get(`${DEVELOPERS_API}`), 
-          axios.get(`${RESOURCES_API}`),
-        ]);
-
-        // Get top 3 items for display
-        setLatestProjects(projectsRes.data.slice(0, 3));
-        setFeaturedDevelopers(devsRes.data.slice(0, 3));
-        setLatestResources(resourcesRes.data.slice(0, 3));
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching homepage data:", error);
-        setLoading(false);
-      }
-    };
-    fetchData();
+    getServices().then(setServices);
+    getProjects().then(setProjects);
+    getDevelopers().then(setDevelopers);
   }, []);
 
   return (
-    <div className="homepage">
-      
-      {/* 1. Hero Section (Inspired by Zimyo's layout) */}
-      <section className="hero-section">
-        <div className="hero-text-content">
-          <h1>New-Age IT Hub for Project & Talent Management</h1>
-          <p>
-            Simplify collaboration, showcase cutting-edge projects, and manage developer profiles dynamically 
-            with our powerful React and Django platform.
-          </p>
-          <Link to="/projects" className="primary-btn hero-btn">
-            Explore Projects
-          </Link>
-          <Link to="/developers" className="secondary-btn hero-btn">
-            Meet the Team
-          </Link>
-        </div>
-        <div className="hero-image-content">
-            {/* Replace this with a suitable static image or SVG */}
-            
+    <>
+      <Hero />
+
+      {/* SERVICES */}
+      <section className="services">
+        <div className="container">
+          <h2>Our Services</h2>
+          <div className="services-grid">
+            {services.map((s) => (
+              <ServiceCard key={s.id} service={s} />
+            ))}
+          </div>
         </div>
       </section>
 
-      {loading ? (
-        <div className="loading-state-home">Loading dynamic content...</div>
-      ) : (
-        <>
-          {/* 2. Projects Preview Section */}
-          <section className="preview-section projects-preview">
-            <h2 className="section-title">✨ Featured Projects</h2>
-            <div className="preview-grid">
-              {latestProjects.map(p => (
-                <div key={p.id} className="preview-card">
-                  <h3>{p.title}</h3>
-                  <p>{p.description.substring(0, 80)}...</p>
-                  <Link to="/projects" className="preview-link">View Details →</Link>
-                </div>
-              ))}
-            </div>
-          </section>
+      {/* PROJECTS */}
+      <section className="projects">
+        <div className="container">
+          <h2>Our Projects</h2>
+          <div className="projects-grid">
+            {projects.map((p) => (
+              <ProjectCard key={p.id} project={p} />
+            ))}
+          </div>
+        </div>
+      </section>
 
-          {/* 3. Developer Preview Section */}
-          <section className="preview-section developers-preview">
-            <h2 className="section-title">👤 Our Top Developers</h2>
-            <div className="preview-grid">
-              {featuredDevelopers.map(d => (
-                <div key={d.id} className="preview-card developer-card-home">
-                  <h4>{d.name}</h4>
-                  <p className="dev-title-home">{d.title}</p>
-                  <Link to="/developers" className="preview-link">View Profile →</Link>
-                </div>
-              ))}
-            </div>
-          </section>
+      {/* DEVELOPERS */}
+      <section className="developers">
+        <div className="container">
+          <h2>Meet Our Team</h2>
+          <p className="subtitle">
+            Experienced developers building scalable software.
+          </p>
 
-          {/* 4. Resources Preview Section */}
-          <section className="preview-section resources-preview">
-            <h2 className="section-title">📰 Latest Resources</h2>
-            <div className="preview-grid">
-              {latestResources.map(r => (
-                <div key={r.id} className="preview-card">
-                  <h3>{r.title}</h3>
-                  <p>{r.content.substring(0, 80)}...</p>
-                  <Link to="/resources" className="preview-link">Read More →</Link>
-                </div>
-              ))}
-            </div>
-          </section>
-        </>
-      )}
-    </div>
+          <div className="developers-grid">
+            {developers.map((dev) => (
+              <DeveloperCard key={dev.id} developer={dev} />
+            ))}
+          </div>
+        </div>
+      </section>
+    </>
   );
-};
-
-export default HomePage;
+}

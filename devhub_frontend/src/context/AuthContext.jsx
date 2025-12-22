@@ -1,32 +1,31 @@
-// src/context/AuthContext.js (Conceptual)
+// src/context/AuthContext.jsx
+import { createContext, useState } from "react";
+import API from "../services/api";
 
-import React, { createContext, useState, useContext } from 'react';
 
-const AuthContext = createContext(null);
+export const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
-    // This state would normally be initialized from localStorage/sessionStorage
-    const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
 
-    const login = (username, password) => {
-        // In a real app, this would call the Django API to get a token
-        if (username === 'admin' && password === 'password123') {
-            setIsAdminLoggedIn(true);
-            return true;
-        }
-        return false;
+export default function AuthProvider({ children }) {
+    const [user, setUser] = useState(null);
+
+
+    const login = async (username, password) => {
+        const res = await API.post("/token/", { username, password });
+        localStorage.setItem("token", res.data.access);
+        setUser(username);
     };
+
 
     const logout = () => {
-        setIsAdminLoggedIn(false);
-        // Clear token from storage
+        localStorage.removeItem("token");
+        setUser(null);
     };
 
+
     return (
-        <AuthContext.Provider value={{ isAdminLoggedIn, login, logout }}>
+        <AuthContext.Provider value={{ user, login, logout }}>
             {children}
         </AuthContext.Provider>
     );
-};
-
-export const useAuth = () => useContext(AuthContext);
+}

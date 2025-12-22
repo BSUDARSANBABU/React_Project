@@ -18,17 +18,13 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
-from django.conf.urls.static import static
+from rest_framework_simplejwt.views import TokenObtainPairView
 from django.conf import settings
-from django.http import HttpResponse
+from django.conf.urls.static import static
 
 urlpatterns = [
-    path('admin/', admin.site.urls), # Admin login and content update
-    path('api/', include('core_api.urls')),
-    path('api-auth/', include('rest_framework.urls')), 
-   
+    path('admin/', admin.site.urls),
+    path('', include('core_api.urls')),
+    path('api/token/', TokenObtainPairView.as_view()),
 ]
-
-# Serve media files (images) during development
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
