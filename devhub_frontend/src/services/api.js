@@ -1,8 +1,8 @@
 import axios from "axios";
-
+const BASE_API_URL ="https://react-project-4-704p.onrender.com"
 
 const api = axios.create({
-baseURL: "http://127.0.0.1:8000/api/",
+baseURL: BASE_API_URL,
 });
 
 
