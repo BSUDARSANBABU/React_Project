@@ -3,7 +3,7 @@ import { AuthContext } from "../../context/AuthContext";
 
 
 export default function Login() {
-const { login } = useContext(AuthContext);
+// const { login } = useContext(AuthContext);
 const [username, setUsername] = useState("");
 const [password, setPassword] = useState("");
 
