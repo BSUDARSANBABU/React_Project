@@ -3,14 +3,11 @@ import react from '@vitejs/plugin-react'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    react({
-      babel: {
-        plugins: [['babel-plugin-react-compiler']],
-      },
-    }),
-  ],
+  plugins: [react()],
   build: {
-    outDir: 'dist',   // Netlify expects this
+    outDir: 'dist',   // Netlify publish folder
+  },
+  server: {
+    port: 5173,
   },
 })
